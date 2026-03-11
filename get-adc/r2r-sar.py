@@ -3,9 +3,9 @@ import RPi.GPIO as GPIO
 import time
 import adcplot
 
-class R2R_ADC:
-    def __init__(self, dynamic_range, compare_time = 0.0001, verbose = False):
 
+class R2R_ADC:
+    def __init__(self, dynamic_range, compare_time = 0.01, verbose = False):
         self.dynamic_range = dynamic_range
         self.verbose = verbose
         self.compare_time = compare_time
@@ -35,18 +35,35 @@ class R2R_ADC:
         return num
     def get_sc_voltage(self):
         return self.sequential_counting_adc() * self.dynamic_range / 255
+    def successive_approximation_adc(self):
+        self.number_to_dac(0)
+        num = 0
+        for bit in self.bits_gpio:
+            num *= 2
+            GPIO.output(bit, 1)
+            time.sleep(self.compare_time)
+            if GPIO.input(self.comp_gpio):
+                GPIO.output(bit, 0)
+            else:
+                num += 1
+        self.number_to_dac(0)
+        return num
+    def get_sar_voltage(self):
+        return self.successive_approximation_adc() * self.dynamic_range / 255
+
 
 voltage_values = []
 time_values = []
 duration = 3.0
 adc = R2R_ADC(3.300)
+
 try:
     start_time = time.time_ns()
     time_0 = start_time
     while ((time_0 - start_time) / 1e9 < duration):
         time_0 = time.time_ns()
-        volt = adc.get_sc_voltage()
-        print(volt, (time_0 - start_time) / 1e9)
+        volt = adc.get_sar_voltage()
+        print(volt)
         time_values.append((time_0 - start_time) / 1e9)
         voltage_values.append(volt)
 

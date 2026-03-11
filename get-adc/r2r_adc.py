@@ -54,7 +54,7 @@ if __name__ == "__main__":
         adc = R2R_ADC(3.300)
         while True:
             print("Напряжение cs", adc.get_sc_voltage(), "В")
-            print("Напряжение sar", adc.get_sar_voltage(), "В")
+            # print("Напряжение sar", adc.get_sar_voltage(), "В")
 
     finally:
         adc.deinit()

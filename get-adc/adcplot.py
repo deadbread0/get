@@ -7,8 +7,8 @@ def plot_voltage_vs_time(time, voltage, max_voltage):
     plt.grid(visible = True)
     # plt.xlim(3)
     # plt.ylim(max_voltage)
-    plt.xlabel('t')
-    plt.ylabel('U')
+    plt.xlabel('t, c')
+    plt.ylabel('U, B')
     plt.title('U(t)')
     plt.show()
 def plot_sampling_period_hist(time):
@@ -20,9 +20,9 @@ def plot_sampling_period_hist(time):
 
     plt.figure(figsize=(10,6))
     plt.hist(sampling_periods)
-    plt.xlabel('t')
-    plt.ylabel('U')
-    plt.title('U(t)')
+    plt.xlabel('t, c')
+    plt.ylabel('n')
+    plt.title('n(t)')
     plt.xlim(0, 0.06)
     plt.grid(visible = True)
     plt.show()
